@@ -5,10 +5,8 @@ import Navbar from "../components/Navbar";
 const Home = () => {
     return (
         <div className='mx-auto max-w-screen-2xl'>
-             <Navbar />
-         
+            <Navbar /> 
             <Outlet />
-        
         </div>
     )
 }
