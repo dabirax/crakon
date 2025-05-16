@@ -10,7 +10,7 @@ export default function Login() {
         console.log(email, password)
     }
     return (
-        <form className=' max-w-sm p-6 mx-auto my-16 bg-[#effaf0] rounded-xl border shadow-lg fromTop' onSubmit={handleSubmit}>
+        <form className=' max-w-sm p-6 mx-auto my-24 bg-[#effaf0] rounded-xl border shadow-lg fromTop' onSubmit={handleSubmit}>
             <h2 className='flex justify-center items-center mx-auto my-0 text-xl font-medium uppercase tracking-wider'>Login</h2>
             <div className=' mt-4 flex flex-col gap-4'>
 
