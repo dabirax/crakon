@@ -5,20 +5,56 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import heroImg from "@/assets/hero-artisans.png";
 import { Link } from "react-router-dom";
+import {useRegisterCustomer} from '@/hooks/useRegister'
 
 const RegisterCustomer = () => {
   const [form, setForm] = useState({
     fullName: "",
     location: "",
     phoneNumber: "",
+    email: "",       
+    password: "",    
+  confirmPassword: "",
   });
+
+  const { mutate, isLoading} = useRegisterCustomer();
 
   const update = (key, value) =>
     setForm((p) => ({ ...p, [key]: value }));
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+  e.preventDefault();
+
+  // simple front-end validation
+  if (!form.fullName || !form.email || !form.password || !form.confirmPassword) {
+    alert("Please fill all required fields");
+    return;
+  }
+
+  
+
+  // call mutation
+  mutate(
+    {
+      fullName: form.fullName,
+      email: form.email,
+      password: form.password,
+    },
+    {
+      onSuccess: (data) => {
+        localStorage.setItem("token", data.token);
+        console.log("User registered:", data.user);
+        // window.location.href = "/welcome";
+      },
+      onError: (err) => {
+        console.error(err);
+        alert(
+          err.response?.data?.message || "Registration failed, check console"
+        );
+      },
+    }
+  );
+};
 
   return (
     <div className="min-h-screen bg-background">
@@ -65,8 +101,11 @@ const RegisterCustomer = () => {
           </h3>
           {[
             { label: "Full Name", key: "fullName" },
+            { label: "Email", key: "email" },
             { label: "Location", key: "location" },
             { label: "Phone Number", key: "phoneNumber" },
+            { label: "Password", key: "password" },
+            { label: "Confirm Password", key: "confirmPassword" },
           ].map(({ label, key }) => (
             <div key={key} className="mb-4">
               <label className="text-sm font-heading font-semibold text-foreground mb-1 block">
@@ -82,11 +121,11 @@ const RegisterCustomer = () => {
 
           <div className="text-center">
             <Button
-              type="submit"
+              type="submit" disabled={isLoading}
               className="bg-primary text-primary-foreground rounded-full px-10 hover:bg-crakon-blue-dark"
             >
-              Enter
-            </Button>
+        {isLoading ? "Registering..." : "Enter"}
+      </Button>
           </div>
         </form>
       </section>
